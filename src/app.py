@@ -338,16 +338,8 @@ def solve(buffer, bobot, sequence, m):
                     koor = []
                     seqgab[cnt].pop(0)
         cnt += 1
-
-    print("\nResult Calculated!")
-    print("Maximum Weight:", max_val)
+        
     sek = " ".join(max_seq[:-1])
-    print(sek)
-    print("Sequence:", " ".join(max_seq[:-1]))
-    print("Coordinates:")
-    for i in max_coords:
-        i.cetaktitik()
-
     return max_val,sek,max_coords
 
 
@@ -510,12 +502,11 @@ def download():
     matrix = session.get('matrix')
     coordinate = session.get('coordinate')
 
-    content = f"Buffers: {buffers}\n"
-    content += f"Sequences: {sequencemax}\n"
-    content += f"Elapsed Time: {elapsed_time} seconds\n"
-    content += "Coordinates:\n"
+    content = f"{buffers}\n"
+    content += f"{sequencemax}\n"
     for coord in coordinate:
         content += f"{coord[1]+1}, {coord[0]+1}\n"
+    content += f"{elapsed_time} ms\n"
 
     save_path = os.path.join((os.path.dirname(app.root_path)), 'test', 'result.txt')
     
