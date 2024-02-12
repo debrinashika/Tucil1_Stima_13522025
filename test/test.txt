@@ -1,0 +1,7 @@
+Maximum Weight: 103
+BD E9 55 7A 
+4, 1
+4, 2
+1, 2
+1, 4
+executed in 24.638 ms

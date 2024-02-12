@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    line-height: 1.5;
+    font-weight: 400;
+    --default-spacing: 10px;
+    --default-margin: 1rem;
+    --medium-margin: 3rem;
+    --larger-margin: 5rem;
+    --primary-color: #B38151;
+    --secondary-color: #7C432B;
+    --primary-color-dark: #291515;
+    --grey: #f2f2f2;
+    --white: #F0F0EC;
+}
+
+body {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: var(--white);
+    text-align: center;
+}
+
+
+h1, h2,h3{
+    color: var(--secondary-color);
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    width: 100%;
+    margin: auto;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    margin-right: var(--default-margin);
+    max-width: 1000px;
+    width: 100%;
+    background: #fff;
+    padding: 30px;
+    border-radius: 30px;
+    flex-direction: column;
+    text-align: center;
+}
+
+.containery {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    margin-right: var(--default-margin);
+    max-width: 1000px;
+    width: 100%;
+    background: #fff;
+    padding: 30px;
+    border-radius: 30px;
+    flex-direction: column;
+    text-align: center;
+}
+
+
+.container.left,
+.container.right {
+    width: 400px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.top-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1500px;
+}
+
+.container.bottom {
+    width: 100%;
+    margin-top: var(--default-spacing);
+}
+
+.click-button,
+.download-button,a {
+    display: block;
+    width: 100%;
+    padding: 16px 0;
+    border-radius: 15px;
+    background: var(--secondary-color);
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: all .3s ease;
+    margin-top: 10px;
+}
+
+.back {
+    display: block;
+    width: 100%;
+    background: var(--secondary-color);
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: all .3s ease;
+    margin-top: 10px;
+}
+
+.click-button:hover,
+.download-button:hover,back:hover {
+    background: var(--primary-color-dark);
+}
+
+.select-folder-label {
+    display: block;
+    width: 100%;
+    padding: 16px 0;
+    border-radius: 15px;
+    background: var(--secondary-color);
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: all .3s ease;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.select-folder-label:hover {
+    background: var(--primary-color-dark);
+}
+
+.radio-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.select-folder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: var(--default-spacing);
+}
+
+.select-folder input {
+    display: none;
+}
+
+.select-folder-label {
+    padding: 16px 0;
+    border-radius: 15px;
+    background: var(--secondary-color);
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all .3s ease;
+    text-align: center;
+    width: 100%;
+}
+
+.select-folder-label:hover {
+    background: var(--primary-color-dark);
+}
+
+input[type="number"],
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 1px;
+}
+
+label {
+    margin-bottom: 1px; 
+}
+
+.map {
+    position: relative;
+    width: 500px; 
+    height: 500px; 
+    border: 2px solid #000;
+  }
+  
+  .location {
+    position: absolute;
+    width: 20px; 
+    height: 20px;
+    background-color: red; 
+    border-radius: 50%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .point {
+    color: white;
+  }
+  
+  .cell {
+    fill: #fff;
+    stroke: #000; 
+  }
+  
+  

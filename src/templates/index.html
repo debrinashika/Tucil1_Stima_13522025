@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <title>Image Processing App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <br>
+    <h1> Cyberpunk 2077 Breach Protocol</h1>
+    <h2> With Brute Force Algorithm</h2>
+    <br>
+    <br>
+    <div class="container">
+        <form action="/upload" method="post" enctype="multipart/form-data" class="form-container" onsubmit="return validateForm()">
+            <div class="top-container">
+                <div class="container left">
+                    <h3 style="margin-top: 20px;">Choose Mode</h3>
+                    <div class="toggle-button">
+                        <div class="radio-container">
+                            <input type="radio" id="file" name="mode" value="file" onchange="toggleInputType(this)" checked>
+                            <label for="file">File</label>
+                            <div class="radio-custom"></div>
+                        </div>
+                        <div class="radio-container">
+                            <input type="radio" id="manual" name="mode" value="manual" onchange="toggleInputType(this)">
+                            <label for="manual">Manual</label>
+                            <div class="radio-custom"></div>
+                        </div>
+                    </div>
+                    <button class="click-button" type="submit"> SOLVE </button>
+                </div>
+                <div class="container right" id="manual-input" style="display: none;">
+                    <h3 style="margin-top: 20px;">Manual Input</h3>
+                    <label for="jumlah">Enter the number of tokens (2 minimum):</label>
+                    <input type="number" id="jumlah" name="jumlah" min="2">
+                    
+                    <label for="sekuens">Enter tokens separated by space:</label>
+                    <input type="text" id="sekuens" name="sekuens" oninput="checkDuplicates()">
+                    
+                    <label for="buffer">Enter buffer length:</label>
+                    <input type="number" id="buffer" name="buffer">
+                    
+                    <label for="row">Enter matrix row length:</label>
+                    <input type="number" id="row" name="row">
+                    
+                    <label for="cols">Enter matrix column length:</label>
+                    <input type="number" id="cols" name="cols">
+                    
+                    <label for="jumlah_sekuens">Enter the number of sequences:</label>
+                    <input type="number" id="jumlah_sekuens" name="jumlah_sekuens">
+                    
+                    <label for="maks_sekuens">Enter maximum length of sequence:</label>
+                    <input type="number" id="maks_sekuens" name="maks_sekuens">
+                </div>
+                <div class="container right" id="folderInput">
+                    <h3 style="margin-top: 20px;">Upload File</h3>
+                    <label class="select-folder">
+                        <input type="file" id="fileInput" name="fileInput" accept=".txt" onchange="handleFileUpload(event)">
+                        <div id="fileStatus" style="display: none;">File telah diunggah.</div>
+
+                        <span class="select-folder-label">Choose File</span>
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        function toggleInputType(input) {
+        const manualInput = document.getElementById('manual-input');
+        const fileInput = document.getElementById('folderInput');
+        const form = document.querySelector('form');
+        const fileInputField = document.getElementById('fileInput');
+
+        if (input.value === 'file') {
+                manualInput.style.display = 'none';
+                fileInput.style.display = 'block';
+                form.action = "/upload"; 
+            } else {
+                manualInput.style.display = 'block';
+                fileInput.style.display = 'none';
+                form.action = "/manual_upload"; 
+            }
+        }
+
+        function handleFileUpload(event) {
+            const fileInput = event.target;
+            const fileStatus = document.getElementById('fileStatus');
+            
+            if (fileInput.files.length > 0) {
+                fileStatus.style.display = 'block';
+            } else {
+                fileStatus.style.display = 'none';
+            }
+            }
+            function checkDuplicates() {
+                var input = document.getElementById("sekuens").value.trim(); 
+                var tokens = input.split(" "); 
+                var uniqueTokens = new Set(tokens); 
+                var uniqueArray = Array.from(uniqueTokens); 
+                var output = uniqueArray.join(" "); 
+                
+                if (input !== output) {
+                    alert("Duplicates removed: " + input + " -> " + output); 
+                    document.getElementById("sekuens").value = output;
+                }
+        }
+
+
+        function validateForm() {
+            var mode = document.querySelector('input[name="mode"]:checked').value; 
+            if (mode === "manual") {
+                var jumlah = document.getElementById("jumlah").value;
+                var input = document.getElementById("sekuens").value.trim(); 
+                var tokens = input.split(" "); 
+
+                if (tokens.length < jumlah) {
+                    alert("Please enter at least " + jumlah + " tokens separated by space.");
+                    return false; 
+                }
+
+                checkDuplicates(tokens);
+            }
+
+            return true;
+        }
+
+</script>
+
+    </script>
+</body>
+</html>

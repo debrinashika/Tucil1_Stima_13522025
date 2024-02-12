@@ -1,0 +1,16 @@
+6
+5 5
+n2 ks 23 AA 23
+23 33 33 ks 23 
+AA AA n2 ks n2
+n2 AA ks ks n2 
+n2 23 ks 33 ks
+4
+n2 n2
+24
+AA ks
+52
+n2 33
+3
+23 AA 23
+34

@@ -453,7 +453,6 @@ void solve(int *buffer, vector<int> &bobot, vector<vector<string>> &sequence, Ma
                     }
                     koor.clear();
                     }
-                    seqgab[cnt].erase(seqgab[cnt].begin());
                 
 
             }

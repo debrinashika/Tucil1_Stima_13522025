@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <br>
+    <h1>Result</h1>
+    <br>
+    <br>
+    <div class="containery">
+        {% if sequence!="No Solution" %}
+            <h3>Maximum Weight: {{ buffers }}</h3>
+            <h3>sequence: {{ sequence }}</h3>
+            <h3>Elapsed Time: {{ elapsed_time }} seconds</h3>
+            <svg id="map" class="map"></svg>
+        {% endif %}
+        {% if sequence=="No Solution" %}
+            <h3>{{ sequence }}</h3>
+            <h3>Elapsed Time: {{ elapsed_time }} seconds</h3>
+        {% endif %}
+        <a class="download-link" href="{{ url_for('download') }}">Download Result</a>
+        <a href="/"> 
+            <button class="back" type="button"> BACK </button>
+        </a>
+    </div>
+    
+    <script>
+        var matrixData = JSON.parse('{{ matrix | safe }}');
+
+        document.addEventListener("DOMContentLoaded", function() {
+        const svg = document.getElementById('map');
+        const numRows = matrixData.length; 
+        const numCols = matrixData[0].length; 
+        const mapWidth = 500; 
+        const mapHeight = 500;
+
+        const cellWidth = mapWidth / numCols; 
+        const cellHeight = mapHeight / numRows;
+
+        for (let i = 0; i < numRows; i++) {
+            for (let j = 0; j < numCols; j++) {
+            const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            rect.setAttribute('x', j * cellWidth);
+            rect.setAttribute('y', i * cellHeight);
+            rect.setAttribute('width', cellWidth);
+            rect.setAttribute('height', cellHeight);
+            rect.setAttribute('class', 'cell');
+            svg.appendChild(rect);
+            
+            const element = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            element.setAttribute('x', (j * cellWidth) + (cellWidth / 2));
+            element.setAttribute('y', (i * cellHeight) + (cellHeight / 2));
+            element.setAttribute('class', 'element');
+            element.setAttribute('text-anchor', 'middle');
+            element.setAttribute('dominant-baseline', 'middle'); 
+            element.textContent =matrixData[i][j]; 
+            svg.appendChild(element);
+            }
+        }
+        
+        const locations = JSON.parse('{{ coordinate | safe }}');
+
+        locations.forEach((location, index) => {
+            const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            point.setAttribute('cx', location[1] * cellWidth + (cellWidth / 2));
+            point.setAttribute('cy', location[0] * cellHeight + (cellHeight / 2));
+            point.setAttribute('r', 5); 
+            point.setAttribute('fill', 'red');
+            svg.appendChild(point);
+
+            if (index > 0) {
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', locations[index - 1][1] * cellWidth + (cellWidth / 2));
+            line.setAttribute('y1', locations[index - 1][0] * cellHeight + (cellHeight / 2));
+            line.setAttribute('x2', location[1] * cellWidth + (cellWidth / 2));
+            line.setAttribute('y2', location[0] * cellHeight + (cellHeight / 2));
+            line.setAttribute('stroke', 'blue');
+            line.setAttribute('stroke-width', 2); 
+            svg.appendChild(line);
+            }
+        });
+        });
+        
+    </script>
+</body>
+</html>
