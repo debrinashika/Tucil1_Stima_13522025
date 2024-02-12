@@ -231,4 +231,12 @@ label {
     stroke: #000; 
   }
   
-  
+  .sekuens {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0px;
+}
+
+.sekuens p {
+    margin-right: 10px;
+}
