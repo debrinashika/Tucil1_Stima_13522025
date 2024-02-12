@@ -14,13 +14,25 @@
     <div class="containery">
         {% if sequence!="No Solution" %}
             <h3>Maximum Weight: {{ buffers }}</h3>
-            <h3>sequence: {{ sequence }}</h3>
-            <h3>Elapsed Time: {{ elapsed_time }} seconds</h3>
+            <h3>Sequence: {{ sequence }}</h3>
+            <h3>Elapsed Time: {{ elapsed_time }} ms</h3>
             <svg id="map" class="map"></svg>
+            {% if mode == "manual" %}
+            <h3>Sequences</h3>
+                {% for index in range(seq | length) %}
+                    <div class="sekuens">
+                        {% for s in seq[index] %}
+                            <p>{{ s }}</p>
+                        {% endfor %}
+                        <p>Bobot: {{ bobot[index] }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
         {% endif %}
         {% if sequence=="No Solution" %}
             <h3>{{ sequence }}</h3>
-            <h3>Elapsed Time: {{ elapsed_time }} seconds</h3>
+            <h3>Elapsed Time: {{ elapsed_time }} ms</h3>
+            <svg id="map" class="map"></svg>
         {% endif %}
         <a class="download-link" href="{{ url_for('download') }}">Download Result</a>
         <a href="/"> 
@@ -84,7 +96,7 @@
             }
         });
         });
-        
+
     </script>
 </body>
 </html>

@@ -161,31 +161,43 @@ def kombisequens(sequence, temp, idx, index, index2, seqgab, bobot, bb, k, buf):
             index.append(idx)
         return
 
-    for i, seq in enumerate(sequence):
+    for i in range(len(sequence)+1):
         if i not in index2:
-            temp.append(seq)
-            idx += str(i)
-            index2.append(i)
-            bb.append(bobot[i])
+            if (i==len(sequence) and len(temp)):
+                temp.append(["bebas"])
+                idx += str(i)
+                index2.append(i)
+                bb.append(0)
 
-            kombisequens(sequence, temp, idx, index, index2, seqgab, bobot, bb, k - 1, buf)
-            temp.pop()
-            idx = idx[:-1]
-            bb.pop()
-            index2.pop()
+                kombisequens(sequence, temp, idx, index, index2, seqgab, bobot, bb, k - 1, buf)
+                temp.pop()
+                idx = idx[:-1]
+                bb.pop()
+                index2.pop()
+            elif(i!=len(sequence)):
+                temp.append(sequence[i])
+                idx += str(i)
+                index2.append(i)
+                bb.append(bobot[i])
+
+                kombisequens(sequence, temp, idx, index, index2, seqgab, bobot, bb, k - 1, buf)
+                temp.pop()
+                idx = idx[:-1]
+                bb.pop()
+                index2.pop()
 
 def cekadatoken(m, token, bar, kol, pilihan):
     if pilihan == 1:
         for j in range(len(m.isi)):
-            if m.isi[j][kol] == token:
+            if m.isi[j][kol] == token or token == "bebas":
                 return True
     elif pilihan == 2:
         for j in range(len(m.isi[bar])):
-            if m.isi[bar][j] == token:
+            if m.isi[bar][j] == token or token == "bebas":
                 return True
     else:
         for j in range(1, len(m.isi)):
-            if m.isi[j][kol] == token:
+            if m.isi[j][kol] == token or token == "bebas":
                 return True
     return False
 
@@ -206,7 +218,6 @@ def solve(buffer, bobot, sequence, m):
         for i in range(m.cols):
             tidakcocok = False
             lok = 0
-            print(seqgab[cnt])
             if m.isi[0][i] == seqgab[cnt][0]:
                 if (not cekadatoken(m, seqgab[cnt][1], lok, i, 1)):
                     tidakcocok = True
@@ -216,20 +227,30 @@ def solve(buffer, bobot, sequence, m):
                     done = False
                     total = 1
                     now = i
+                    bebrow=-1
+                    bebcol=-1
                     while total < len(seqgab[cnt]) - 1 and ada:
                         ada = False
                         if total % 2 == 1:
                             for z in range(m.rows):
-                                if m.isi[z][now] == seqgab[cnt][total] and len(koor)>0 and not arraytitiksama(koor,Titik(z, now)):
+                                if (m.isi[z][now] == seqgab[cnt][total] or seqgab[cnt][total] == "bebas") and len(koor)>0 and not arraytitiksama(koor,Titik(z, now)):
                                     if total == len(seqgab[cnt]) - 2 or cekadatoken(m, seqgab[cnt][total + 1], z, z, 2):
+                                        if(seqgab[cnt][total] == "bebas"):
+                                            seqgab[cnt][total] = m.isi[z][now]
+                                            bebrow=cnt
+                                            bebcol=total
                                         koor.append(Titik(z, now))
                                         now = z
                                         ada = True
                                         break
                         elif total % 2 == 0:
                             for z in range(m.cols):
-                                if m.isi[now][z] == seqgab[cnt][total] and  not arraytitiksama(koor,Titik(now, z)):
+                                if (m.isi[now][z] == seqgab[cnt][total] or seqgab[cnt][total] == "bebas") and  not arraytitiksama(koor,Titik(now, z)):
                                     if total == len(seqgab[cnt]) - 2 or ((total < len(seqgab) - 2) and cekadatoken(m, seqgab[cnt][total + 1], z, z, 1)):
+                                        if(seqgab[cnt][total] == "bebas"):
+                                            seqgab[cnt][total] = m.isi[now][z]
+                                            bebrow=cnt
+                                            bebcol=total
                                         koor.append(Titik(now, z))
                                         now = z
                                         ada = True
@@ -245,11 +266,15 @@ def solve(buffer, bobot, sequence, m):
                                 max_val = total_weight
                                 max_seq = seqgab[cnt]
                                 max_coords = koor
+                                if bebrow!=-1:
+                                    seqgab[bebrow][bebcol] == "bebas"
     
                             else:
                                 max_val = total_weight
                                 max_seq = seqgab[cnt]
                                 max_coords = koor
+                                if bebrow!=-1:
+                                    seqgab[bebrow][bebcol] == "bebas"
                                 
                     koor = []
             if (m.isi[0][i] != seqgab[cnt][0] or tidakcocok) and len(seqgab[cnt]) <= buffer:
@@ -260,26 +285,38 @@ def solve(buffer, bobot, sequence, m):
                     done = False
                     total = 1
                     now = i
+                    bebrow=-1
+                    bebcol=-1
                     while total < len(seqgab[cnt]) - 1 and ada:
                         ada = False
                         if total % 2 == 1:
                             for z in range(m.rows):
-                                if m.isi[z][now] == seqgab[cnt][total] and len(koor)>0 and not arraytitiksama(koor,Titik(z, now)):
+                                if (m.isi[z][now] == seqgab[cnt][total] or seqgab[cnt][total] == "bebas") and len(koor)>0 and not arraytitiksama(koor,Titik(z, now)):
                                     if total == len(seqgab[cnt]) - 2 or cekadatoken(m, seqgab[cnt][total + 1], z, z, 2):
+                                        if(seqgab[cnt][total] == "bebas"):
+                                            seqgab[cnt][total] = m.isi[z][now]
+                                            bebrow=cnt
+                                            bebcol=total
                                         koor.append(Titik(z, now))
                                         now = z
                                         ada = True
                                         break
                         elif total % 2 == 0:
                             for z in range(m.cols):
-                                if m.isi[now][z] == seqgab[cnt][total] and  not arraytitiksama(koor,Titik(now, z)):
+                                if (m.isi[now][z] == seqgab[cnt][total] or seqgab[cnt][total] == "bebas") and  not arraytitiksama(koor,Titik(now, z)):
                                     if total == len(seqgab[cnt]) - 2 or ((total < len(seqgab) - 2) and cekadatoken(m, seqgab[cnt][total + 1], z, z, 1)):
+                                        if(seqgab[cnt][total] == "bebas"):
+                                            seqgab[cnt][total] = m.isi[now][z]
+                                            bebrow=cnt
+                                            bebcol=total
                                         koor.append(Titik(now, z))
                                         now = z
                                         ada = True
                                         break
                         if ada and total == len(seqgab[cnt]) - 2:
                             done = True
+                        if not ada and bebrow!=-1:
+                            seqgab[bebrow][bebcol] == "bebas"
                         if ada:
                             total += 1
                     if done:
@@ -290,12 +327,16 @@ def solve(buffer, bobot, sequence, m):
                                 seq_copy = seqgab[cnt].copy()
                                 max_seq = seq_copy
                                 max_coords = koor
+                                if bebrow!=-1:
+                                    seqgab[bebrow][bebcol] == "bebas"
                                 
                             else:
                                 max_val = total_weight
                                 seq_copy = seqgab[cnt].copy()
                                 max_seq = seq_copy
                                 max_coords = koor
+                                if bebrow!=-1:
+                                    seqgab[bebrow][bebcol] == "bebas"
                                 
                     koor = []
                     seqgab[cnt].pop(0)
@@ -373,7 +414,7 @@ def upload():
             start_time = time.time()
             buffers,sequencemax,coordinate = solve(buffer, bobot, sequence, m)
             end_time = time.time()
-            elapsed_time = end_time - start_time
+            elapsed_time = (end_time - start_time)*1000
 
             if(sequencemax==""):
                 sequencemax = "No Solution"
@@ -386,10 +427,13 @@ def upload():
                 koordinat.append(koor)
         
             session['buffers'] = buffers
+            session['sekuense'] = sequence
+            session['bobot'] = bobot
             session['sekuenses'] = sequencemax
             session['elapsed_time'] = elapsed_time
             session['matrix'] = m.isi
             session['coordinate'] = koordinat
+            session['mode'] = "file"
 
             return redirect(url_for('result'))
 
@@ -417,12 +461,16 @@ def manual_upload():
         length = random.randint(2, maks_sekuens)
         for _ in range(length):
             temp.append(random.choice(sekuens))
+        while temp in sequence:
+            for _ in range(length):
+                temp.append(random.choice(sekuens))
         sequence.append(temp)
         bobot.append(random.randint(1, 60))
+        
     start_time = time.time()
     buffers,sequencemax,coordinate=solve(buffer, bobot, sequence, m)
     end_time = time.time()
-    elapsed_time = end_time - start_time
+    elapsed_time = (end_time - start_time)*1000
 
     if(sequencemax==""):
         sequencemax = "No Solution"
@@ -434,11 +482,14 @@ def manual_upload():
         koor.append(i.y)
         koordinat.append(koor)
 
+    session['sekuense'] = sequence
+    session['bobot'] = bobot
     session['buffers'] = buffers
     session['sekuenses'] = sequencemax
     session['elapsed_time'] = elapsed_time
     session['matrix'] = m.isi
     session['coordinate'] = koordinat
+    session['mode'] = "manual"
 
     return redirect(url_for('result'))
 
@@ -446,14 +497,17 @@ def manual_upload():
 def result():
     buffers = session.get('buffers')
     sequence = session.get('sekuenses')
+    seq = session.get('sekuense')
+    bobot = session.get('bobot')
     elapsed_time = session.get('elapsed_time')
+    mode = session.get('mode')
     matrix = session.get('matrix')
     matrix = json.dumps(matrix)
 
     coordinate = session.get('coordinate')
     coordinate = json.dumps(coordinate)
 
-    return render_template('result.html', buffers=buffers, sequence=sequence, elapsed_time=elapsed_time,matrix=matrix,coordinate=coordinate)
+    return render_template('result.html', buffers=buffers, sequence=sequence, elapsed_time=elapsed_time,matrix=matrix,coordinate=coordinate,seq=seq,bobot=bobot,mode=mode)
 
 @app.route('/download', methods=['GET'])
 def download():
@@ -470,11 +524,11 @@ def download():
     for coord in coordinate:
         content += f"{coord[1]+1}, {coord[0]+1}\n"
 
-    save_path = os.path.join(app.root_path, 'result.txt')
-
+    save_path = os.path.join((os.path.dirname(app.root_path)), 'test', 'result.txt')
+    
     with open(save_path, "w") as file:
         file.write(content)
-    return send_file("result.txt", as_attachment=True)
+    return send_file(save_path, as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)
