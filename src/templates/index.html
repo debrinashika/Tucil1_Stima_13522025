@@ -38,7 +38,7 @@
                     <input type="number" id="jumlah" name="jumlah" min="2">
                     
                     <label for="sekuens">Enter tokens separated by space:</label>
-                    <input type="text" id="sekuens" name="sekuens" oninput="checkDuplicates()">
+                    <input type="text" id="sekuens" name="sekuens">
                     
                     <label for="buffer">Enter buffer length:</label>
                     <input type="number" id="buffer" name="buffer">
@@ -96,7 +96,8 @@
                 fileStatus.style.display = 'none';
             }
             }
-            function checkDuplicates() {
+
+        function checkDuplicates() {
                 var input = document.getElementById("sekuens").value.trim(); 
                 var tokens = input.split(" "); 
                 var uniqueTokens = new Set(tokens); 
@@ -116,10 +117,18 @@
                 var jumlah = document.getElementById("jumlah").value;
                 var input = document.getElementById("sekuens").value.trim(); 
                 var tokens = input.split(" "); 
+                var uniqueTokens = new Set(tokens); 
+                var uniqueArray = Array.from(uniqueTokens); 
+                var output = uniqueArray.join(" "); 
 
-                if (tokens.length < jumlah) {
-                    alert("Please enter at least " + jumlah + " tokens separated by space.");
+                if (tokens.length != jumlah) {
+                    alert("Please enter " + jumlah + " tokens separated by space.");
                     return false; 
+                }
+
+                if (input !== output) {
+                    alert("Please remove duplicate tokens"); 
+                    return false;
                 }
 
                 checkDuplicates(tokens);

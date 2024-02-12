@@ -112,25 +112,18 @@ def input_func():
                 temp.append(random.choice(sekuens))
             sequence.append(temp)
             bobot.append(random.randint(1, 60))
-        
-        print("\n\nMatrix generated!")
-        m.printMatrix()
-        
-        print("\n\nSequence generated!")
-        for i, seq in enumerate(sequence):
-            print("Sequence", i+1)
-            print(" ".join(seq))
-            print("Weight:", bobot[i], "\n")
 
     return buffer, bobot, sequence, m
 
 def arraytitiksama(t1, t2):
+    # memeriksa apakah dua titik sama
     for t in t1:
         if t.titiksama(t2):
             return True
     return False
 
 def panjangaman(sequence, buf):
+    # memeriksa apakah panjang sequence masih kurang atau sama dengan buffer
     size = 0
     for seq in sequence:
         if size + len(seq) <= buf:
@@ -140,12 +133,14 @@ def panjangaman(sequence, buf):
     return True
 
 def cekkembar(sequence, buf):
+    # memeriksa apakah ada token yang kembar
     for seq in sequence:
         if seq == buf:
             return True
     return False
 
 def kombisequens(sequence, temp, idx, index, index2, seqgab, bobot, bb, k, buf):
+    # fungsi untuk melakukan permutasi terhadap sekuens-sekuens
     if k == 0:
         if panjangaman(temp, buf) and not cekkembar(index, idx):
             temp2 = []
@@ -187,23 +182,25 @@ def kombisequens(sequence, temp, idx, index, index2, seqgab, bobot, bb, k, buf):
                 index2.pop()
 
 def cekadatoken(m, token, bar, kol, pilihan):
+    # fungsi untuk memeriksa apakah terdapat token pada sebuah baris atau kolom
     if pilihan == 1:
         for j in range(len(m.isi)):
-            if m.isi[j][kol] == token or token == "bebas":
+            if m.isi[j][kol] == token or token == "bebas": # cek vertikal
                 return True
     elif pilihan == 2:
         for j in range(len(m.isi[bar])):
-            if m.isi[bar][j] == token or token == "bebas":
+            if m.isi[bar][j] == token or token == "bebas": # cek horizonatal
                 return True
     else:
         for j in range(1, len(m.isi)):
-            if m.isi[j][kol] == token or token == "bebas":
+            if m.isi[j][kol] == token or token == "bebas": # cek vertikal dari baris ke 2
                 return True
     return False
 
 def solve(buffer, bobot, sequence, m):
+    # program untuk mencari solusi optimal dengan mencocokkan sekuens dengan matriks
     idx = ""
-    max_val = 0
+    max_val = -999
     max_seq = []
     max_coords = []
     koor = []
@@ -218,7 +215,7 @@ def solve(buffer, bobot, sequence, m):
         for i in range(m.cols):
             tidakcocok = False
             lok = 0
-            if m.isi[0][i] == seqgab[cnt][0]:
+            if m.isi[0][i] == seqgab[cnt][0]: # melakukan pencarian pada baris pertama
                 if (not cekadatoken(m, seqgab[cnt][1], lok, i, 1)):
                     tidakcocok = True
                 else:
@@ -231,7 +228,7 @@ def solve(buffer, bobot, sequence, m):
                     bebcol=-1
                     while total < len(seqgab[cnt]) - 1 and ada:
                         ada = False
-                        if total % 2 == 1:
+                        if total % 2 == 1: # melakukan pencarian secara vertikal
                             for z in range(m.rows):
                                 if (m.isi[z][now] == seqgab[cnt][total] or seqgab[cnt][total] == "bebas") and len(koor)>0 and not arraytitiksama(koor,Titik(z, now)):
                                     if total == len(seqgab[cnt]) - 2 or cekadatoken(m, seqgab[cnt][total + 1], z, z, 2):
@@ -243,7 +240,7 @@ def solve(buffer, bobot, sequence, m):
                                         now = z
                                         ada = True
                                         break
-                        elif total % 2 == 0:
+                        elif total % 2 == 0: # melakukan pencarian secara horizontal
                             for z in range(m.cols):
                                 if (m.isi[now][z] == seqgab[cnt][total] or seqgab[cnt][total] == "bebas") and  not arraytitiksama(koor,Titik(now, z)):
                                     if total == len(seqgab[cnt]) - 2 or ((total < len(seqgab) - 2) and cekadatoken(m, seqgab[cnt][total + 1], z, z, 1)):
@@ -259,7 +256,7 @@ def solve(buffer, bobot, sequence, m):
                             done = True
                         if ada:
                             total += 1
-                    if done:
+                    if done: # jika terdapat dalam matriks
                         total_weight = int(seqgab[cnt][-1])
                         if total_weight > max_val:
                             if max!=-999 and len(max_seq)>len(seqgab):
@@ -277,7 +274,7 @@ def solve(buffer, bobot, sequence, m):
                                     seqgab[bebrow][bebcol] == "bebas"
                                 
                     koor = []
-            if (m.isi[0][i] != seqgab[cnt][0] or tidakcocok) and len(seqgab[cnt]) <= buffer:
+            if (m.isi[0][i] != seqgab[cnt][0] or tidakcocok) and len(seqgab[cnt]) <= buffer: # tidak ada token yang cocok di baris pertama
                 if cekadatoken(m, seqgab[cnt][0], 0, i, 3):
                     seqgab[cnt].insert(0, m.isi[0][i])
                     koor.append(Titik(0, i))
@@ -289,7 +286,7 @@ def solve(buffer, bobot, sequence, m):
                     bebcol=-1
                     while total < len(seqgab[cnt]) - 1 and ada:
                         ada = False
-                        if total % 2 == 1:
+                        if total % 2 == 1: # melakukan pengecekan secara vertikal
                             for z in range(m.rows):
                                 if (m.isi[z][now] == seqgab[cnt][total] or seqgab[cnt][total] == "bebas") and len(koor)>0 and not arraytitiksama(koor,Titik(z, now)):
                                     if total == len(seqgab[cnt]) - 2 or cekadatoken(m, seqgab[cnt][total + 1], z, z, 2):
@@ -301,7 +298,7 @@ def solve(buffer, bobot, sequence, m):
                                         now = z
                                         ada = True
                                         break
-                        elif total % 2 == 0:
+                        elif total % 2 == 0: # melakukan pengecekan secara horizontal
                             for z in range(m.cols):
                                 if (m.isi[now][z] == seqgab[cnt][total] or seqgab[cnt][total] == "bebas") and  not arraytitiksama(koor,Titik(now, z)):
                                     if total == len(seqgab[cnt]) - 2 or ((total < len(seqgab) - 2) and cekadatoken(m, seqgab[cnt][total + 1], z, z, 1)):
@@ -319,10 +316,10 @@ def solve(buffer, bobot, sequence, m):
                             seqgab[bebrow][bebcol] == "bebas"
                         if ada:
                             total += 1
-                    if done:
+                    if done: # jika terdapat dalam matriks
                         total_weight = int(seqgab[cnt][-1])
                         if total_weight > max_val:
-                            if max!=-999 and len(max_seq)>len(seqgab):
+                            if max!=-999 and len(max_seq)>len(seqgab): 
                                 max_val = total_weight
                                 seq_copy = seqgab[cnt].copy()
                                 max_seq = seq_copy
@@ -353,14 +350,6 @@ def solve(buffer, bobot, sequence, m):
 
     return max_val,sek,max_coords
 
-def main():
-    buffer = 0
-    bobot = []
-    sequence = []
-    m = Matrix()
-
-    buffer, bobot, sequence, m = input_func()
-    solve(buffer, bobot, sequence, m)
 
 def file_exists(file_path):
     return os.path.exists(file_path)
@@ -416,8 +405,10 @@ def upload():
             end_time = time.time()
             elapsed_time = (end_time - start_time)*1000
 
-            if(sequencemax==""):
+            if(buffers<0):
+                buffers=0
                 sequencemax = "No Solution"
+                coordinate = []
 
             koordinat = []
             for i in coordinate:
@@ -472,8 +463,10 @@ def manual_upload():
     end_time = time.time()
     elapsed_time = (end_time - start_time)*1000
 
-    if(sequencemax==""):
+    if(buffers<0):
+        buffers=0
         sequencemax = "No Solution"
+        coordinate = []
 
     koordinat = []
     for i in coordinate:
