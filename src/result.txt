@@ -1,9 +1,0 @@
-Buffers: 79
-Sequences: n2 n2 33 AA ks
-Elapsed Time: 0.03323960304260254 seconds
-Coordinates:
-1, 1
-1, 5
-4, 5
-4, 1
-2, 1

@@ -256,6 +256,7 @@ def solve(buffer, bobot, sequence, m):
                             done = True
                         if ada:
                             total += 1
+
                     if done: # jika terdapat dalam matriks
                         total_weight = int(seqgab[cnt][-1])
                         if total_weight > max_val:
@@ -265,7 +266,6 @@ def solve(buffer, bobot, sequence, m):
                                 max_coords = koor
                                 if bebrow!=-1:
                                     seqgab[bebrow][bebcol] == "bebas"
-    
                             else:
                                 max_val = total_weight
                                 max_seq = seqgab[cnt]
@@ -326,7 +326,6 @@ def solve(buffer, bobot, sequence, m):
                                 max_coords = koor
                                 if bebrow!=-1:
                                     seqgab[bebrow][bebcol] == "bebas"
-                                
                             else:
                                 max_val = total_weight
                                 seq_copy = seqgab[cnt].copy()
@@ -334,7 +333,7 @@ def solve(buffer, bobot, sequence, m):
                                 max_coords = koor
                                 if bebrow!=-1:
                                     seqgab[bebrow][bebcol] == "bebas"
-                                
+
                     koor = []
                     seqgab[cnt].pop(0)
         cnt += 1
@@ -377,7 +376,7 @@ def upload():
                     buffer = int(line)
                 elif i == 1:
                     a, b = map(int, line.split())
-                    m.setmatrix(a, b)
+                    m.setmatrix(b, a)
                 elif 1 < i < m.getRows() + 2:
                     seqs += line.split()
                     if i == m.getRows() + 1:
@@ -508,7 +507,8 @@ def download():
         content += f"{coord[1]+1}, {coord[0]+1}\n"
     content += f"{elapsed_time} ms\n"
 
-    save_path = os.path.join((os.path.dirname(app.root_path)), 'test', 'result.txt')
+    nama = sequencemax + ".txt"
+    save_path = os.path.join((os.path.dirname(app.root_path)), 'test', nama)
     
     with open(save_path, "w") as file:
         file.write(content)
